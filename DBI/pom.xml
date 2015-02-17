@@ -1,0 +1,126 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.renjin.cran</groupId>
+    <artifactId>DBI</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>DBI</name>
+    <description>JDBC-based DBI implementation for Renjin</description>
+    <licenses>
+        <license>
+            <name>Mozilla Public License Version 1.1</name>
+            <url>https://www.mozilla.org/MPL/1.1/</url>
+        </license>
+    </licenses>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <!-- the script engine is convenient even if you do not use it explicitly -->
+        <dependency>
+            <groupId>org.renjin</groupId>
+            <artifactId>renjin-script-engine</artifactId>
+            <version>0.7.0-RC8-SNAPSHOT</version>
+        </dependency>
+        <!-- the hamcrest package is only required if you use it for unit tests -->
+        <dependency>
+            <groupId>org.renjin</groupId>
+            <artifactId>hamcrest</artifactId>
+            <version>0.7.0-RC8-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.renjin.cran</groupId>
+            <artifactId>survey</artifactId>
+            <version>LATEST</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <id>bedatadriven</id>
+            <name>bedatadriven public repo</name>
+            <url>http://nexus.bedatadriven.com/content/groups/public/</url>
+        </repository>
+        
+    </repositories>
+    
+     <pluginRepositories>
+        <pluginRepository>
+ 			<id>bedatadriven</id>
+            <name>bedatadriven public repo</name>
+            <url>http://nexus.bedatadriven.com/content/groups/public/</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.renjin</groupId>
+                <artifactId>renjin-maven-plugin</artifactId>
+                <version>0.7.0-RC8-SNAPSHOT</version>
+                <executions>
+                    <execution>
+                        <id>build</id>
+                        <goals>
+                            <goal>namespace-compile</goal>
+                        </goals>
+                        <phase>compile</phase>
+                    </execution>
+                    <execution>
+                        <id>test</id>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                        <phase>test</phase>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+        <pluginManagement>
+        	<plugins>
+        		<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+        		<plugin>
+        			<groupId>org.eclipse.m2e</groupId>
+        			<artifactId>lifecycle-mapping</artifactId>
+        			<version>1.0.0</version>
+        			<configuration>
+        				<lifecycleMappingMetadata>
+        					<pluginExecutions>
+        						<pluginExecution>
+        							<pluginExecutionFilter>
+        								<groupId>org.renjin</groupId>
+        								<artifactId>
+        									renjin-maven-plugin
+        								</artifactId>
+        								<versionRange>
+        									[0.7.0-RC7,)
+        								</versionRange>
+        								<goals>
+        									<goal>
+        										namespace-compile
+        									</goal>
+        								</goals>
+        							</pluginExecutionFilter>
+        							<action>
+        								<ignore></ignore>
+        							</action>
+        						</pluginExecution>
+        					</pluginExecutions>
+        				</lifecycleMappingMetadata>
+        			</configuration>
+        		</plugin>
+        	</plugins>
+        </pluginManagement>
+    </build>
+</project>

@@ -1,0 +1,89 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.renjin.cran</groupId>
+    <artifactId>RSQLite</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>RSQLite</name>
+    <description>RSQLite connects SQLite and Renjin via a DBI-like interface</description>
+    <licenses>
+        <license>
+            <name>Mozilla Public License Version 1.1</name>
+            <url>https://www.mozilla.org/MPL/1.1/</url>
+        </license>
+    </licenses>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.renjin</groupId>
+            <artifactId>renjin-script-engine</artifactId>
+            <version>0.7.0-RC8-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.renjin</groupId>
+            <artifactId>hamcrest</artifactId>
+            <version>0.7.0-RC8-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
+		<dependency>
+		    <groupId>org.renjin.cran</groupId>
+		    <artifactId>DBI</artifactId>
+		    <version>0.0.1-SNAPSHOT</version>
+		</dependency>
+ 		<dependency>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>3.8.7</version>
+        </dependency>
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <id>bedatadriven</id>
+            <name>bedatadriven public repo</name>
+            <url>http://nexus.bedatadriven.com/content/groups/public/</url>
+        </repository>
+        
+		<repository>
+			<id>clojars.org</id>
+			<url>http://clojars.org/repo</url>
+		</repository>
+    </repositories>
+    
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.renjin</groupId>
+                <artifactId>renjin-maven-plugin</artifactId>
+                <version>0.7.0-RC8-SNAPSHOT</version>
+                <executions>
+                    <execution>
+                        <id>build</id>
+                        <goals>
+                            <goal>namespace-compile</goal>
+                        </goals>
+                        <phase>compile</phase>
+                    </execution>
+                    <execution>
+                        <id>test</id>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                        <phase>test</phase>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+       
+    </build>
+</project>
