@@ -13,4 +13,13 @@
 
 	<name>DBI</name>
 	<description>JDBC-based DBI implementation for Renjin</description>
+
+	<build>
+        <plugins>
+            <plugin>
+                <groupId>org.renjin</groupId>
+                <artifactId>renjin-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>
