@@ -27,12 +27,12 @@
         <dependency>
             <groupId>org.renjin</groupId>
             <artifactId>renjin-script-engine</artifactId>
-            <version>0.7.0-RC8-SNAPSHOT</version>
+            <version>0.7.0-RC7</version>
         </dependency>
         <dependency>
             <groupId>org.renjin</groupId>
             <artifactId>hamcrest</artifactId>
-            <version>0.7.0-RC8-SNAPSHOT</version>
+            <version>0.7.0-RC7</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -67,7 +67,7 @@
             <plugin>
                 <groupId>org.renjin</groupId>
                 <artifactId>renjin-maven-plugin</artifactId>
-                <version>0.7.0-RC8-SNAPSHOT</version>
+                <version>0.7.0-RC7</version>
                 <executions>
                     <execution>
                         <id>build</id>
@@ -86,6 +86,5 @@
                 </executions>
             </plugin>
         </plugins>
-       
     </build>
 </project>
