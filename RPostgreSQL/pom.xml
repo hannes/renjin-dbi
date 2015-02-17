@@ -39,7 +39,6 @@
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
-
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
@@ -53,9 +52,15 @@
 			<name>bedatadriven public repo</name>
 			<url>http://nexus.bedatadriven.com/content/groups/public/</url>
 		</repository>
-
 	</repositories>
 
+	 <pluginRepositories>
+        <pluginRepository>
+ 			<id>bedatadriven</id>
+            <name>bedatadriven public repo</name>
+            <url>http://nexus.bedatadriven.com/content/groups/public/</url>
+        </pluginRepository>
+    </pluginRepositories>
 
 	<build>
 		<plugins>
