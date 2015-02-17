@@ -1,5 +1,3 @@
-library(DBI)
-
 RMySQL <- MySQLRMySQL <- function() {
 	JDBC('com.mysql.jdbc.Driver', 'MySQL')
 } 

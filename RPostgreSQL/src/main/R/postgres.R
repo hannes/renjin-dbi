@@ -1,5 +1,3 @@
-library(DBI)
-
 RPostgreSQL <- PostgreSQL <- function() {
 	JDBC('org.postgresql.Driver', 'PostgreSQL')
 } 

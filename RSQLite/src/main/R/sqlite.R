@@ -1,5 +1,3 @@
-library(DBI)
-
 RSQLite <- SQLite <- function() {
 	JDBC('org.sqlite.JDBC', 'SQLite')
 } 

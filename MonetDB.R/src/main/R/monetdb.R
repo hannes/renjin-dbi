@@ -1,5 +1,3 @@
-library(DBI)
-
 MonetDB.R <- MonetDB <- function() {
 	JDBC("nl.cwi.monetdb.jdbc.MonetDriver", "MonetDB")
 } 
