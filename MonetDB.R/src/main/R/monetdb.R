@@ -13,14 +13,16 @@ MonetDB.R <- MonetDB <- function() {
 dbConnect.MonetDBDriver <- function(drv, dbname="demo", username="monetdb", 
 		password="monetdb", host="localhost", port=50000L, timeout=86400L, wait=FALSE, language="sql", 
 		..., url="") {
-	if (substring(dbname, 1, 5) != "jdbc:") {
-		if (substring(dbname, 1, 10) == "monetdb://") {
-			url <- paste("jdbc:", dbname, sep="")
+	if (missing(url)) {
+		if (substring(dbname, 1, 5) != "jdbc:") {
+			if (substring(dbname, 1, 10) == "monetdb://") {
+				url <- paste("jdbc:", dbname, sep="")
+			} else {
+				url <- paste("jdbc:monetdb://", host,":", as.integer(port), "/", dbname, sep="")
+			}
 		} else {
-			url <- paste("jdbc:monetdb://", host,":", as.integer(port), "/", dbname, sep="")
+			url <- dbname
 		}
-	} else {
-		url <- dbname
 	}
 	# TODO: auto-assign a specific class to the connection based on the driver name for ez overloading
 	structure(list(conn = dbConnect.JDBCDriver(drv, url, username, password)$conn), class = c("MonetDBConnection", "JDBCConnection"))
