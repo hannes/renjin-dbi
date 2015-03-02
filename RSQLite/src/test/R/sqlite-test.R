@@ -3,7 +3,7 @@ library(RSQLite)
 
 test.driver <- function() {
 	drv <- dbDriver("RSQLite")	
-	con <- conn <- dbConnect(drv, url="jdbc:sqlite:", username="", password="")
-	con <- conn <- dbConnect(drv) # shorthand
+	con <- dbConnect(drv, url="jdbc:sqlite:", username="", password="")
+	con <- dbConnect(drv) # shorthand
 	renjinDBITest(con)
 }

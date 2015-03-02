@@ -1,3 +1,4 @@
-# export everything that does not start with a .
 import(DBI)
+importClass(org.renjin.cran.DBI.JDBCUtils)
+importClass(org.sqlite.JDBC)
 exportPattern("^[^\\.]")

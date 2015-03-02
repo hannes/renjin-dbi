@@ -1,5 +1,5 @@
 RPostgreSQL <- PostgreSQL <- function() {
-	JDBC('org.postgresql.Driver', 'PostgreSQL')
+	JDBC(Driver$new(), 'PostgreSQL')
 } 
 
 # load DBI to replicate GNU R 'Depends:'

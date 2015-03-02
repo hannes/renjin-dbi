@@ -1,5 +1,5 @@
 RMySQL <- MySQLRMySQL <- function() {
-	JDBC('com.mysql.jdbc.Driver', 'MySQL')
+	JDBC(Driver$new(), 'MySQL')
 } 
 
 # load DBI to replicate GNU R 'Depends:'

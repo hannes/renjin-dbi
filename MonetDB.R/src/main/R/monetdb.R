@@ -1,6 +1,5 @@
 MonetDB.R <- MonetDB <- function() {
-	jdriver <- import(nl.cwi.monetdb.jdbc.MonetDriver)
-	jdriverinstance <- jdriver$new()
+	jdriverinstance <- MonetDriver$new()
 	JDBC(jdriverinstance, "MonetDB")
 } 
 

@@ -1,4 +1,4 @@
-# export everything that does not start with a .
 import(DBI)
+importClass(org.renjin.cran.DBI.JDBCUtils)
 importClass(nl.cwi.monetdb.jdbc.MonetDriver)
 exportPattern("^[^\\.]")

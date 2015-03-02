@@ -1,2 +1,4 @@
 import(DBI)
+importClass(org.renjin.cran.DBI.JDBCUtils)
+importClass(com.mysql.jdbc.Driver)
 exportPattern("^[^\\.]")

@@ -1,5 +1,5 @@
 RSQLite <- SQLite <- function() {
-	JDBC('org.sqlite.JDBC', 'SQLite')
+	JDBC(JDBC$new(), "SQLite")
 } 
 
 # load DBI to replicate GNU R 'Depends:'
