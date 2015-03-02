@@ -1,9 +1,6 @@
-JDBC <- function(jclass, rclassprefix, ...) {
-	# this will fail if the driver is not in the classpath
-	import(java.lang.Class)
-	Class$forName(jclass)
+JDBC <- function(jdriver, rclassprefix, ...) {
 	rclass <- paste0(rclassprefix, "Driver")
-	structure(list(rclassprefix=rclassprefix), class = c(rclass, "JDBCDriver", "DBIDriver"))
+	structure(list(jdriver=jdriver, rclassprefix=rclassprefix), class = c(rclass, "JDBCDriver", "DBIDriver"))
 }
 
 # DBI methods in S3 form for source compatibility
@@ -71,7 +68,6 @@ dbGetInfo.JDBCDriver <- function(obj, ...) {
 	list()
 }
 
-# TODO: how can we check this? SELECT 1?
 dbIsValid.JDBCConnection <- function(con) {
 	inherits(con, "JDBCConnection")
 }
@@ -87,7 +83,10 @@ dbRemoveTable.JDBCConnection <- function(con, name, ...) {
 dbConnect.JDBCDriver <- function(drv, url, username, password) {
 	# this will throw an exception if it fails, so no need for additional checks here.
 	if (getOption("dbi.debug", F)) message("II: Connecting to ",url," with user ", username, " and a non-printed password.")
-	jconn <- import(java.sql.DriverManager)$getConnection(url, username, password);
+	prop <- import(java.util.Properties)$new()
+	prop$setProperty("user", username)
+	prop$setProperty("password", password)
+	jconn <- drv$jdriver$connect(url, prop)
 	rclass <- paste0(drv$rclassprefix, "Connection")
 	structure(list(conn = jconn), class = c(rclass, "JDBCConnection", "DBIConnection"))
 }
@@ -134,7 +133,7 @@ dbExistsTable.JDBCConnection <- function(con, name, ...) {
 }
 
 dbListTables.JDBCConnection <- function(con) {
-	import(org.renjin.cran.DBI.JDBCUtils)$getTables(con$conn)	
+	JDBCUtils$getTables(con$conn)	
 }
 
 dbBegin.JDBCConnection <- function(con, ...) {
@@ -160,18 +159,18 @@ dbDisconnect.JDBCConnection <- function(con, ...) {
 
 # dealing with ResultSet and ResultSetMetaData objects is far too ugly to do here
 dbFetch.JDBCResultSet <- function(res, n, ...) {
-	import(org.renjin.cran.DBI.JDBCUtils)$fetch(res$resultset, n)	
+	JDBCUtils$fetch(res$resultset, n)	
 }
 
 dbColumnInfo.JDBCResultSet <- function(res, ...) {
-	cinf <- import(org.renjin.cran.DBI.JDBCUtils)$columnInfo(res$resultset)	
+	cinf <- JDBCUtils$columnInfo(res$resultset)	
 	tpes <- unlist(lapply(cinf,'[[',"type"))
 	nmes <- unlist(lapply(cinf,'[[',"name"))
 	data.frame(field.name=nmes, field.type=tpes, data.type=.typeMapping[tpes])
 }
 
 dbHasCompleted.JDBCResultSet <- function(res, ...) {
-	import(org.renjin.cran.DBI.JDBCUtils)$hasCompleted(res$resultset)
+	JDBCUtils$hasCompleted(res$resultset)
 }
 
 dbClearResult.JDBCResultSet <- function(res, ...) {
@@ -316,7 +315,7 @@ dbDataType.JDBCConnection <- function(con, obj, ...) {
 dbListFields.JDBCConnection <- function(con, name, ...) {
 	if (!dbExistsTable(con, name))
 		stop("Unknown table ", name);
-	import(org.renjin.cran.DBI.JDBCUtils)$getColumns(con$conn, name)	
+	JDBCUtils$getColumns(con$conn, name)	
 }
 
 # TODO: this breaks if the value contains a ?, fix this (also in MonetDB.R!)
