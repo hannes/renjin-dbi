@@ -305,12 +305,12 @@ dbWriteTable.JDBCConnection <- function(conn, name, value, overwrite=FALSE,
 
 
 dbDataType.JDBCConnection <- function(con, obj, ...) {
-	if (is.factor(obj)) "STRING"
+	if (is.factor(obj)) "TEXT"
 	else if (is.logical(obj)) "BOOLEAN"
 	else if (is.integer(obj)) "INTEGER"
 	else if (is.numeric(obj)) "DOUBLE PRECISION"
 	else if (is.raw(obj)) "BLOB"
-	else "STRING"
+	else "TEXT"
 }
 
 dbListFields.JDBCConnection <- function(con, name, ...) {
