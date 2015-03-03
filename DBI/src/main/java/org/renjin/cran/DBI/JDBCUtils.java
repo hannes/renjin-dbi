@@ -175,7 +175,7 @@ public class JDBCUtils {
       }
       /* I'm a data.frame object */
       IntArrayVector.Builder rnb = new IntArrayVector.Builder();
-      for (long i = 0; i < rows; i++) {
+      for (long i = 1; i <= rows; i++) {
         rnb.add(i);
       }
       dfb.setAttribute("row.names", rnb.build());
