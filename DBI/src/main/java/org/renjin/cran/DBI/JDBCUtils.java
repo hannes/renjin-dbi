@@ -109,7 +109,7 @@ public class JDBCUtils {
           builders.put(i, new LogicalArrayVector.Builder());
           rtypes[i] = RTYPE.LOGICAL;
         }
-        if (tpe.equals("string") || tpe.equals("clob") || tpe.endsWith("char") || tpe.equals("date")
+        if (tpe.equals("string") || tpe.equals("text") || tpe.equals("clob") || tpe.endsWith("char") || tpe.equals("date")
             || tpe.equals("time") || tpe.equals("null") || tpe.equals("unknown")) {
           builders.put(i, new StringArrayVector.Builder());
           rtypes[i] = RTYPE.CHARACTER;
