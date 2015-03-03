@@ -154,11 +154,11 @@ dbRollback.JDBCConnection <- function(con, ...) {
 } 
 
 dbDisconnect.JDBCConnection <- function(con, ...) {
-	TRUE
+	invisible(TRUE)
 }
 
 # dealing with ResultSet and ResultSetMetaData objects is far too ugly to do here
-dbFetch.JDBCResultSet <- function(res, n, ...) {
+dbFetch.JDBCResultSet <- function(res, n=-1, ...) {
 	JDBCUtils$fetch(res$resultset, n)	
 }
 

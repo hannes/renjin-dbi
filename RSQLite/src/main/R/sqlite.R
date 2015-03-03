@@ -8,5 +8,6 @@ RSQLite <- SQLite <- function() {
 
 # some defaults for quick connections
 dbConnect.SQLiteDriver <- function(drv, url="jdbc:sqlite:", username="", password="") {
+	if (substring(url, 1, 12) != "jdbc:sqlite:") url <- paste0("jdbc:sqlite:", url)
 	dbConnect.JDBCDriver(drv, url, username, password)
 }
