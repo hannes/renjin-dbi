@@ -77,7 +77,7 @@ dbRemoveTable.JDBCConnection <- function(con, name, ...) {
 		dbSendUpdate(con, paste("DROP TABLE", tolower(name)))
 		return(invisible(TRUE))
 	}
-	return(invisible(FALSE))
+	invisible(FALSE)
 }
 
 dbConnect.JDBCDriver <- function(drv, url, username, password) {
@@ -88,7 +88,7 @@ dbConnect.JDBCDriver <- function(drv, url, username, password) {
 	prop$setProperty("password", password)
 	jconn <- drv$jdriver$connect(url, prop)
 	rclass <- paste0(drv$rclassprefix, "Connection")
-	structure(list(conn = jconn), class = c(rclass, "JDBCConnection", "DBIConnection"))
+	invisible(structure(list(conn = jconn), class = c(rclass, "JDBCConnection", "DBIConnection")))
 }
 
 dbSendQuery.JDBCConnection <- function (con, qry) {
@@ -96,8 +96,8 @@ dbSendQuery.JDBCConnection <- function (con, qry) {
 	
 	stmt <- con$conn$createStatement()
 	res <-  stmt$execute(qry)
-	structure(list(query = qry, statement = stmt, resultset = stmt$resultSet, success = TRUE), 
-			class = "JDBCResultSet")
+	invisible(structure(list(query = qry, statement = stmt, resultset = stmt$resultSet, success = TRUE), 
+			class = "JDBCResultSet"))
 }
 
 dbSendUpdate.JDBCConnection <- function(con, qry, ...) {
