@@ -305,7 +305,8 @@ dbWriteTable.JDBCConnection <- function(conn, name, value, overwrite=FALSE,
 
 
 dbDataType.JDBCConnection <- function(con, obj, ...) {
-	if (is.logical(obj)) "BOOLEAN"
+	if (is.factor(obj)) "STRING"
+	else if (is.logical(obj)) "BOOLEAN"
 	else if (is.integer(obj)) "INTEGER"
 	else if (is.numeric(obj)) "DOUBLE PRECISION"
 	else if (is.raw(obj)) "BLOB"
@@ -327,6 +328,9 @@ dbListFields.JDBCConnection <- function(con, name, ...) {
 			statement <- sub("?", "NULL", statement, fixed=TRUE)
 		else if (valueClass %in% c("numeric", "logical", "integer"))
 			statement <- sub("?", value, statement, fixed=TRUE)
+		else if (valueClass == "factor")
+			statement <- sub("?", paste(dbQuoteString(con, toString(as.character(value))), sep=""), statement, 
+					fixed=TRUE)
 		else if (valueClass == c("raw"))
 			stop("raw() data is so far only supported when reading from BLOBs")
 		else
