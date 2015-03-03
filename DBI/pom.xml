@@ -15,11 +15,21 @@
 	<description>JDBC-based DBI implementation for Renjin</description>
 
 	<build>
-        <plugins>
-            <plugin>
-                <groupId>org.renjin</groupId>
-                <artifactId>renjin-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
+		<plugins>
+			<plugin>
+				<groupId>org.renjin</groupId>
+				<artifactId>renjin-maven-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.2</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
