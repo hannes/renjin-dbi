@@ -96,7 +96,7 @@ dbSendQuery.JDBCConnection <- function (con, qry) {
 	
 	stmt <- con$conn$createStatement()
 	res <-  stmt$execute(qry)
-	invisible(structure(list(query = qry, statement = stmt, resultset = stmt$resultSet, success = TRUE), 
+	invisible(structure(list(query = qry, statement = stmt, resultset = JDBCUtils$gimmeResults(stmt), success = TRUE), 
 			class = "JDBCResultSet"))
 }
 
@@ -137,19 +137,19 @@ dbListTables.JDBCConnection <- function(con) {
 }
 
 dbBegin.JDBCConnection <- function(con, ...) {
-	con$conn$autoCommit <- FALSE
+	JDBCUtils$toggleAutocommit(con$conn, FALSE)
 	invisible(TRUE)
 } 
 
 dbCommit.JDBCConnection <- function(con, ...) {
 	con$conn$commit()
-	con$conn$autoCommit <- TRUE
+	JDBCUtils$toggleAutocommit(con$conn, TRUE)
 	invisible(TRUE)
 } 
 
 dbRollback.JDBCConnection <- function(con, ...) {
 	con$conn$rollback()
-	con$conn$autoCommit <- TRUE
+	JDBCUtils$toggleAutocommit(con$conn, TRUE)
 	invisible(TRUE)
 } 
 
@@ -183,8 +183,8 @@ dbIsValid.JDBCResultSet <- function(res, ...) {
 	TRUE
 }
 
-.typeMapping <- rep(c("numeric", "character", "character", "logical", "raw"), c(9, 3, 4, 1, 1))
-names(.typeMapping) <- c(c("TINYINT", "SMALLINT", "INT", "BIGINT", "HUGEINT", "REAL", "DOUBLE", "DECIMAL", "WRD"), 
+.typeMapping <- rep(c("numeric", "character", "character", "logical", "raw"), c(10, 3, 4, 1, 1))
+names(.typeMapping) <- c(c("TINYINT", "SMALLINT", "INT", "BIGINT", "HUGEINT", "REAL", "DOUBLE", "DECIMAL", "WRD", "NUMBER"), 
 		c("CHAR", "VARCHAR", "CLOB"), 
 		c("INTERVAL", "DATE", "TIME", "TIMESTAMP"), 
 		"BOOLEAN", 
@@ -289,7 +289,7 @@ dbWriteTable.JDBCConnection <- function(conn, name, value, overwrite=FALSE,
 		vins <- paste("(", paste(rep("?", length(value)), collapse=', '), ")", sep='')
 		if (transaction) dbBegin(conn)
 		# chunk some inserts together so we do not need to do a round trip for every one
-		splitlen <- 0:(nrow(value)-1) %/% getOption("monetdb.insert.splitsize", 1000)
+		splitlen <- 0:(nrow(value)-1) %/% getOption("dbi.insert.splitsize", 1000)
 		lapply(split(value, splitlen), 
 				function(valueck) {
 					bvins <- c()

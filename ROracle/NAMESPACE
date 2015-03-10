@@ -1,0 +1,4 @@
+import(DBI)
+importClass(org.renjin.cran.DBI.JDBCUtils)
+importClass(oracle.jdbc.OracleDriver)
+exportPattern("^[^\\.]")

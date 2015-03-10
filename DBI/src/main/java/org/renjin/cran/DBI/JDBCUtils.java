@@ -3,6 +3,7 @@ package org.renjin.cran.DBI;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -49,7 +50,7 @@ public class JDBCUtils {
     try {
       StringVector.Builder sb = new StringVector.Builder();
       DatabaseMetaData dbm = con.getMetaData();
-      ResultSet rsm = dbm.getColumns(con.getCatalog(), null, table, null);
+      ResultSet rsm = dbm.getColumns(con.getCatalog(), null, table.toUpperCase(), null);
 
       while (rsm.next()) {
         sb.add(rsm.getString("COLUMN_NAME"));
@@ -77,6 +78,26 @@ public class JDBCUtils {
     }
   }
 
+  /*
+   * this is required because Renjn's property accessor fails on the Oracle JDBC
+   * driver
+   */
+  public static ResultSet gimmeResults(Statement s) {
+    try {
+      return s.getResultSet();
+    } catch (SQLException e) {
+    }
+    return null;
+  }
+  
+  /* same as above */
+  public static void toggleAutocommit(Connection c, boolean newState) {
+    try {
+      c.setAutoCommit(newState);
+    } catch (SQLException e) {
+    }
+  }
+
   public static enum RTYPE {
     INTEGER, NUMERIC, CHARACTER, LOGICAL
   };
@@ -100,7 +121,7 @@ public class JDBCUtils {
           builders.put(i, new IntArrayVector.Builder());
           rtypes[i] = RTYPE.INTEGER;
         }
-        if (tpe.equals("decimal") || tpe.equals("real")
+        if (tpe.equals("decimal") || tpe.equals("real") || tpe.equals("number")
             || tpe.startsWith("double") || tpe.startsWith("float")) {
           builders.put(i, new DoubleArrayVector.Builder());
           rtypes[i] = RTYPE.NUMERIC;
@@ -109,8 +130,10 @@ public class JDBCUtils {
           builders.put(i, new LogicalArrayVector.Builder());
           rtypes[i] = RTYPE.LOGICAL;
         }
-        if (tpe.equals("string") || tpe.equals("text") || tpe.equals("clob") || tpe.endsWith("char") || tpe.equals("date")
-            || tpe.equals("time") || tpe.equals("null") || tpe.equals("unknown")) {
+        if (tpe.equals("string") || tpe.equals("text") || tpe.equals("clob")
+            || tpe.startsWith("varchar") || tpe.endsWith("char")
+            || tpe.equals("date") || tpe.equals("time") || tpe.equals("null")
+            || tpe.equals("unknown")) {
           builders.put(i, new StringArrayVector.Builder());
           rtypes[i] = RTYPE.CHARACTER;
         }

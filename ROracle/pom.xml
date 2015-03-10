@@ -1,0 +1,43 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>ROracle</artifactId>
+    <parent>
+        <groupId>org.renjin.cran</groupId>
+        <artifactId>dbiparent</artifactId>
+        <version>0.3-SNAPSHOT</version>
+    </parent>
+    <packaging>jar</packaging>
+
+    <name>ROracle</name>
+    <description>ROracle connects Oracle and Renjin via a DBI-like interface</description>
+
+    <dependencies>
+		<dependency>
+		    <groupId>org.renjin.cran</groupId>
+		    <artifactId>DBI</artifactId>
+		    <version>${project.version}</version>
+		</dependency>
+        <!-- 
+        download ojdbc6.jar from http://www.oracle.com/technetwork/database/enterprise-edition/jdbc-112010-090769.html, then install using
+        mvn install:install-file -Dfile=ojdbc6.jar -DgroupId=com.oracle -DartifactId=ojdbc6 -Dversion=11.2.0.4 -Dpackaging=jar
+        -->
+ 		<dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc6</artifactId>
+            <version>11.2.0.4</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.renjin</groupId>
+                <artifactId>renjin-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>
