@@ -55,6 +55,7 @@
         <module>RPostgreSQL</module>
         <module>RMySQL</module>
         <module>RSQLite</module>
+        <module>ROracle</module>
     </modules>
 
     <repositories>
