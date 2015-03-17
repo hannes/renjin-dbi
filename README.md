@@ -9,7 +9,7 @@ con <- dbConnect(MonetDB.R(), url="jdbc:monetdb://localhost:50000/somedatabase",
 df  <- dbGetQuery(con, "SELECT * from sometable")
 ```
 
-## MySQL
+## MySQL/MariaDB
 ```R
 library(RMySQL)
 con <- dbConnect(RMySQL(), url="jdbc:mysql://localhost:3306/somedatabase", username="someuser", password="somepass")
@@ -21,6 +21,7 @@ df  <- dbGetQuery(con, "SELECT * from sometable")
 library(ROracle)
 con <- dbConnect(ROracle(), url="jdbc:oracle:thin:@localhost", username="someuser", password="somepass")
 df  <- dbGetQuery(con, "SELECT * from sometable")
+
 
 ## PostgreSQL
 ```R
