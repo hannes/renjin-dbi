@@ -16,6 +16,12 @@ con <- dbConnect(RMySQL(), url="jdbc:mysql://localhost:3306/somedatabase", usern
 df  <- dbGetQuery(con, "SELECT * from sometable")
 ```
 
+## Oracle ®
+```R
+library(ROracle)
+con <- dbConnect(ROracle(), url="jdbc:oracle:thin:@localhost", username="someuser", password="somepass")
+df  <- dbGetQuery(con, "SELECT * from sometable")
+
 ## PostgreSQL
 ```R
 library(RPostgreSQL)
@@ -30,9 +36,4 @@ con <- dbConnect(RSQLite(), url="jdbc:sqlite:", username="", password="")
 df  <- dbGetQuery(con, "SELECT * from sometable")
 ```
 
-## Oracle
-```R
-library(ROracle)
-con <- dbConnect(ROracle(), url="jdbc:oracle:thin:@localhost", username="someuser", password="somepass")
-df  <- dbGetQuery(con, "SELECT * from sometable")
 ```
