@@ -35,4 +35,4 @@ df  <- dbGetQuery(con, "SELECT * from sometable")
 library(RSQLite)
 con <- dbConnect(RSQLite(), url="jdbc:sqlite:", username="", password="")
 df  <- dbGetQuery(con, "SELECT * from sometable")
-``` 
+```
