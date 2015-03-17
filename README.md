@@ -21,7 +21,7 @@ df  <- dbGetQuery(con, "SELECT * from sometable")
 library(ROracle)
 con <- dbConnect(ROracle(), url="jdbc:oracle:thin:@localhost", username="someuser", password="somepass")
 df  <- dbGetQuery(con, "SELECT * from sometable")
-
+```
 
 ## PostgreSQL
 ```R
@@ -35,6 +35,4 @@ df  <- dbGetQuery(con, "SELECT * from sometable")
 library(RSQLite)
 con <- dbConnect(RSQLite(), url="jdbc:sqlite:", username="", password="")
 df  <- dbGetQuery(con, "SELECT * from sometable")
-```
-
 ```
