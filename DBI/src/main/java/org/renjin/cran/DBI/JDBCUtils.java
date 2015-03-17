@@ -50,12 +50,19 @@ public class JDBCUtils {
     try {
       StringVector.Builder sb = new StringVector.Builder();
       DatabaseMetaData dbm = con.getMetaData();
-      ResultSet rsm = dbm.getColumns(con.getCatalog(), null, table.toUpperCase(), null);
-
+      ResultSet rsm = dbm.getColumns(con.getCatalog(), null, table, null);
       while (rsm.next()) {
         sb.add(rsm.getString("COLUMN_NAME"));
       }
       rsm.close();
+      // try again with an uppercased table name. Hello, Oracle!
+      if (sb.length() < 1) {
+        rsm = dbm.getColumns(con.getCatalog(), null, table.toUpperCase(), null);
+        while (rsm.next()) {
+          sb.add(rsm.getString("COLUMN_NAME"));
+        }
+        rsm.close();
+      }
       return sb.build();
     } catch (SQLException e) {
       throw new EvalException(e);
