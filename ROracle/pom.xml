@@ -15,20 +15,24 @@
     <name>ROracle</name>
     <description>ROracle connects Oracle and Renjin via a DBI-like interface</description>
 
+    <repositories>
+        <repository>
+            <id>datanucleus.org/</id>
+            <url>http://www.datanucleus.org/downloads/maven2/</url>
+        </repository>
+    </repositories>
+
     <dependencies>
 		<dependency>
 		    <groupId>org.renjin.cran</groupId>
 		    <artifactId>DBI</artifactId>
 		    <version>${project.version}</version>
 		</dependency>
-        <!-- 
-        download ojdbc6.jar from http://www.oracle.com/technetwork/database/enterprise-edition/jdbc-112010-090769.html, then install using
-        mvn install:install-file -Dfile=ojdbc6.jar -DgroupId=com.oracle -DartifactId=ojdbc6 -Dversion=11.2.0.4 -Dpackaging=jar
-        -->
+
  		<dependency>
-            <groupId>com.oracle</groupId>
+            <groupId>oracle</groupId>
             <artifactId>ojdbc6</artifactId>
-            <version>11.2.0.4</version>
+            <version>11.2.0.3</version>
         </dependency>
     </dependencies>
 
