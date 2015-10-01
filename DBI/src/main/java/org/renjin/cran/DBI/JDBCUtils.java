@@ -6,18 +6,16 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.joda.time.format.ISODateTimeFormat;
+import org.renjin.cran.DBI.columns.*;
 import org.renjin.eval.EvalException;
-import org.renjin.sexp.DoubleArrayVector;
+import org.renjin.primitives.vector.RowNamesVector;
 import org.renjin.sexp.IntArrayVector;
 import org.renjin.sexp.ListVector;
-import org.renjin.sexp.LogicalArrayVector;
-import org.renjin.sexp.StringArrayVector;
 import org.renjin.sexp.StringVector;
-import org.renjin.sexp.Vector;
-import org.renjin.sexp.Vector.Builder;
 
 public class JDBCUtils {
 
@@ -105,115 +103,66 @@ public class JDBCUtils {
     }
   }
 
-  public static enum RTYPE {
-    INTEGER, NUMERIC, CHARACTER, LOGICAL
-  };
-
   public static ListVector fetch(ResultSet rs, long n) {
     try {
       if (n < 0) {
         n = Long.MAX_VALUE;
       }
-      ListVector ti = columnInfo(rs);
-      /* cache types, we need to look this up for *every* value */
-      RTYPE[] rtypes = new RTYPE[ti.length()];
+      ListVector columnVector = columnInfo(rs);
+
+      int numColumns = columnVector.length();
+
       /* column builders */
-      Map<Integer, Builder<Vector>> builders = new HashMap<Integer, Builder<Vector>>();
-      for (int i = 0; i < ti.length(); i++) {
-        ListVector ci = (ListVector) ti.get(i);
-        String tpe = ci.get("type").asString().toLowerCase();
-        rtypes[i] = null;
-        if (tpe.endsWith("int") || tpe.equals("wrd") || tpe.startsWith("int")) {
-          // TODO: long values?
-          builders.put(i, new IntArrayVector.Builder());
-          rtypes[i] = RTYPE.INTEGER;
-        }
-        if (tpe.equals("decimal") || tpe.equals("real") || tpe.equals("number")
-            || tpe.startsWith("double") || tpe.startsWith("float")) {
-          builders.put(i, new DoubleArrayVector.Builder());
-          rtypes[i] = RTYPE.NUMERIC;
-        }
-        if (tpe.equals("boolean")) {
-          builders.put(i, new LogicalArrayVector.Builder());
-          rtypes[i] = RTYPE.LOGICAL;
-        }
-        if (tpe.equals("string") || tpe.equals("text") || tpe.equals("clob")
-            || tpe.startsWith("varchar") || tpe.endsWith("char")
-            || tpe.equals("date") || tpe.equals("time") || tpe.equals("null")
-            || tpe.equals("unknown")) {
-          builders.put(i, new StringArrayVector.Builder());
-          rtypes[i] = RTYPE.CHARACTER;
-        }
-        if (rtypes[i] == null) {
-          throw new EvalException("Unknown column type " + ci);
+      List<ColumnBuilder> builders = new ArrayList<ColumnBuilder>();
+      for (int i = 0; i < numColumns; i++) {
+        ListVector columnInfo = (ListVector) columnVector.get(i);
+        String columnType = columnInfo.get("type").asString().toLowerCase();
+        
+        if (BigIntColumnBuilder.acceptsType(columnType)) {
+          builders.add(new BigIntColumnBuilder());
+          
+        } else if (IntColumnBuilder.acceptsType(columnType)) {
+          builders.add(new IntColumnBuilder());
+
+        } else if (DoubleColumnBuilder.acceptsType(columnType)) {
+          builders.add(new DoubleColumnBuilder());
+        
+        } else if (LogicalColumnBuilder.acceptsType(columnType)) {
+          builders.add(new LogicalColumnBuilder());
+
+        } else if (StringColumnBuilder.acceptsType(columnType)) {
+          builders.add(new StringColumnBuilder());
+          
+        } else if (DateStringColumnBuilder.acceptsType(columnType)) {
+          builders.add(new DateStringColumnBuilder(ISODateTimeFormat.dateTime()));
+
+        } else {
+          throw new EvalException("Unknown column type " + columnInfo);
         }
       }
 
-      int ival;
-      double nval;
-      boolean lval;
-      String cval;
       long rows = 0;
       /* collect values */
       while (n > 0 && rs.next()) {
-        rows++;
-        for (int i = 0; i < rtypes.length; i++) {
-          Builder<Vector> bld = builders.get(i);
-          switch (rtypes[i]) {
-          case INTEGER:
-            /* Behold the beauty of JDBC */
-            ival = rs.getInt(i + 1);
-            if (rs.wasNull()) {
-              bld.addNA();
-            } else {
-              ((IntArrayVector.Builder) bld).add(ival);
-            }
-            break;
-          case NUMERIC:
-            nval = rs.getDouble(i + 1);
-            if (rs.wasNull()) {
-              bld.addNA();
-            } else {
-              ((DoubleArrayVector.Builder) bld).add(nval);
-            }
-            break;
-          case LOGICAL:
-            lval = rs.getBoolean(i + 1);
-            if (rs.wasNull()) {
-              bld.addNA();
-            } else {
-              ((LogicalArrayVector.Builder) bld).add(lval);
-            }
-            break;
-          case CHARACTER:
-            cval = rs.getString(i + 1);
-            if (rs.wasNull()) {
-              bld.addNA();
-            } else {
-              ((StringArrayVector.Builder) bld).add(cval);
-            }
-            break;
-          }
+        for (int i = 0; i < numColumns; i++) {
+          builders.get(i).addValue(rs, i+1);
         }
+        rows++;
         n--;
       }
       /* call build() on each column and add them as named cols to df */
-      ListVector.NamedBuilder dfb = new ListVector.NamedBuilder();
-      for (int i = 0; i < ti.length(); i++) {
-        ListVector ci = (ListVector) ti.get(i);
-        dfb.add(ci.get("name").asString(), builders.get(i).build());
+      ListVector.NamedBuilder dataFrame = new ListVector.NamedBuilder();
+      for (int i = 0; i < numColumns; i++) {
+        ListVector ci = (ListVector) columnVector.get(i);
+        dataFrame.add(ci.get("name").asString(), builders.get(i).build());
       }
-      /* I'm a data.frame object */
-      IntArrayVector.Builder rnb = new IntArrayVector.Builder();
-      for (long i = 1; i <= rows; i++) {
-        rnb.add(i);
-      }
-      dfb.setAttribute("row.names", rnb.build());
-      dfb.setAttribute("class", StringVector.valueOf("data.frame"));
-      ListVector lv = dfb.build();
-      return lv;
+      dataFrame.setAttribute("row.names", new RowNamesVector((int)rows));
+      dataFrame.setAttribute("class", StringVector.valueOf("data.frame"));
+      return dataFrame.build();
+
     } catch (SQLException e) {
       throw new EvalException(e);
     }
   }
+
 }
