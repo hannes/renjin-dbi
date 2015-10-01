@@ -1,4 +1,3 @@
 import(DBI)
-importClass(org.renjin.cran.DBI.JDBCUtils)
 importClass(org.postgresql.Driver)
 exportPattern("^[^\\.]")

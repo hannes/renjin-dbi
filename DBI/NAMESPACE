@@ -1,2 +1,3 @@
 # export everything that does not start with a .
+importClass(org.renjin.cran.DBI.JDBCUtils)
 exportPattern("^[^\\.]")
