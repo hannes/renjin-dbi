@@ -19,7 +19,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <renjin.version>0.7.0-RC8-SNAPSHOT</renjin.version>
+        <renjin.version>0.7.1573</renjin.version>
     </properties>
 
     <distributionManagement>
