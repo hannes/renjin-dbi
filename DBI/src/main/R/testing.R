@@ -156,7 +156,7 @@ renjinDBITest <- function (con) {
 	
 	stopifnot(dim(data)[[1]] == 10)
 	stopifnot(dim(data)[[2]] == 2)
-	stopifnot(res@env$delivered == 10)
+	stopifnot(attr(res, 'env')$delivered == 10)
 	stopifnot(dbHasCompleted(res) == FALSE)
 	
 # fetch rest
