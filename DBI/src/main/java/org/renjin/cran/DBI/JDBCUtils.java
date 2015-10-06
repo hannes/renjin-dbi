@@ -100,6 +100,7 @@ public class JDBCUtils {
     try {
       c.setAutoCommit(newState);
     } catch (SQLException e) {
+      throw new EvalException(e);
     }
   }
 
