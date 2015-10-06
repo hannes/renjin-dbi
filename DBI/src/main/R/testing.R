@@ -234,7 +234,6 @@ renjinDBITest <- function (con) {
 	sq <- dbSendQuery(conn,"INSERT INTO renjintest VALUES (42)")
 	stopifnot(identical(1L, tsize(conn, tname)))
 	dbRollback(conn)
-	
 	stopifnot(identical(0L, tsize(conn, tname)))
 	dbBegin(conn)
 	sq <- dbSendQuery(conn,"INSERT INTO renjintest VALUES (42)")
