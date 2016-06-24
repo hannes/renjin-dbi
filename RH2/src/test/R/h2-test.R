@@ -2,6 +2,6 @@ library(hamcrest)
 library(RH2)
 
 test.driver <- function() {
-	con <- dbConnect(RPostgreSQL(), url="jdbc:postgresql://localhost:5432/renjintest", username="renjintest", password="renjintest")
+	con <- dbConnect(RH2(), url="jdbc:h2:file:/tmp/db", username="sa", password="")
 	renjinDBITest(con)
 }
