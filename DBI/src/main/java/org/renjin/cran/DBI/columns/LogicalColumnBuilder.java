@@ -15,6 +15,7 @@ public class LogicalColumnBuilder implements ColumnBuilder {
     }
 
 
+    @Override
     public void addValue(ResultSet rs, int columnIndex) throws SQLException {
         boolean value = rs.getBoolean(columnIndex);
         if(rs.wasNull()) {
@@ -24,6 +25,7 @@ public class LogicalColumnBuilder implements ColumnBuilder {
         }
     }
 
+    @Override
     public AtomicVector build() {
         return vector.build();
     }

@@ -16,6 +16,7 @@ public class DoubleColumnBuilder implements ColumnBuilder {
           || columnType.startsWith("double") || columnType.startsWith("float");
     }
 
+    @Override
     public void addValue(ResultSet rs, int columnIndex) throws SQLException {
         double value = rs.getDouble(columnIndex);
         if(rs.wasNull()) {
