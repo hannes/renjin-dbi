@@ -19,10 +19,12 @@ public class StringColumnBuilder implements ColumnBuilder {
           || columnType.equals("unknown");
     }
 
+    @Override
     public void addValue(ResultSet rs, int columnIndex) throws SQLException {
         vector.add(rs.getString(columnIndex));
     }
 
+    @Override
     public AtomicVector build() {
         return vector.build();
     }
