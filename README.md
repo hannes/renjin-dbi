@@ -36,3 +36,11 @@ library(RSQLite)
 con <- dbConnect(RSQLite(), url="jdbc:sqlite:", username="", password="")
 df  <- dbGetQuery(con, "SELECT * from sometable")
 ```
+
+
+## H2 database
+```R
+library(RH2)
+con <- dbConnect(RH2(), url="jdbc:h2:file:/tmp/mydb", username="", password="")
+df  <- dbGetQuery(con, "SELECT * from sometable")
+```

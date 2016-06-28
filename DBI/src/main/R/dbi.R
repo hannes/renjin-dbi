@@ -103,6 +103,7 @@ dbSendQuery.JDBCConnection <- function (con, qry) {
 dbSendUpdate.JDBCConnection <- function(con, qry, ...) {
 	if(length(list(...))){
 		if (length(list(...))) qry <- .bindParameters(con, qry, list(...))
+
 	}
 	res <- dbSendQuery(con, qry)
 	if (!res$success) {
@@ -287,14 +288,17 @@ dbWriteTable.JDBCConnection <- function(conn, name, value, overwrite=FALSE,
 	}
 	if (length(value[[1]])) {
 		vins <- paste("(", paste(rep("?", length(value)), collapse=', '), ")", sep='')
+
 		if (transaction) dbBegin(conn)
 		# chunk some inserts together so we do not need to do a round trip for every one
 		splitlen <- 0:(nrow(value)-1) %/% getOption("dbi.insert.splitsize", 1000)
+
 		lapply(split(value, splitlen), 
 				function(valueck) {
 					bvins <- c()
 					for (j in 1:length(valueck[[1]])) {
 						bvins <- c(bvins, .bindParameters(conn, vins, as.list(valueck[j, ])))
+                                                                                                
 					} 
 					dbSendUpdate(conn, paste0("INSERT INTO ", qname, " VALUES ",paste0(bvins, collapse=", ")))
 				})
@@ -324,10 +328,11 @@ dbListFields.JDBCConnection <- function(con, name, ...) {
 	for (i in 1:length(param)) {
 		value <- param[[i]]
 		valueClass <- class(value)
-		if (is.na(value)) 
+		if (is.na(value))
 			statement <- sub("?", "NULL", statement, fixed=TRUE)
 		else if (valueClass %in% c("numeric", "logical", "integer"))
-			statement <- sub("?", value, statement, fixed=TRUE)
+			statement <- sub("?", sub(",", ".",value), statement, fixed=TRUE)
+
 		else if (valueClass == "factor")
 			statement <- sub("?", paste(dbQuoteString(con, toString(as.character(value))), sep=""), statement, 
 					fixed=TRUE)

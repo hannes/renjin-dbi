@@ -15,6 +15,7 @@ public class IntColumnBuilder implements ColumnBuilder {
       return columnType.endsWith("int") || columnType.equals("wrd") || columnType.startsWith("int");
     }
 
+    @Override
     public void addValue(ResultSet rs, int columnIndex) throws SQLException {
         int value = rs.getInt(columnIndex);
         if(rs.wasNull()) {
@@ -24,6 +25,7 @@ public class IntColumnBuilder implements ColumnBuilder {
         }
     }
 
+    @Override
     public AtomicVector build() {
         return vector.build();
     }

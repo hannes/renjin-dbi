@@ -13,7 +13,6 @@ import org.joda.time.format.ISODateTimeFormat;
 import org.renjin.cran.DBI.columns.*;
 import org.renjin.eval.EvalException;
 import org.renjin.primitives.vector.RowNamesVector;
-import org.renjin.sexp.IntArrayVector;
 import org.renjin.sexp.ListVector;
 import org.renjin.sexp.StringVector;
 

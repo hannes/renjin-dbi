@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>dbiparent</artifactId>
+        <groupId>org.renjin.cran</groupId>
+        <version>0.3-SNAPSHOT</version>
+    </parent>
+    <organization>
+        <name>CNRS</name>
+        <url>http://www.orbisgis.org</url>
+    </organization>
+
+    <artifactId>RH2</artifactId>
+
+    <name>RH2</name>
+    <description>RH2 connects H2 database and Renjin via a DBI-like interface</description>
+    <packaging>jar</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>        
+        <dependency>
+            <groupId>org.renjin.cran</groupId>
+            <artifactId>DBI</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.192</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.renjin</groupId>
+                <artifactId>renjin-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+   
+</project>
