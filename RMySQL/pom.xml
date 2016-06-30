@@ -7,7 +7,7 @@
 	<parent>
         <groupId>org.renjin.cran</groupId>
         <artifactId>dbiparent</artifactId>
-        <version>0.3-SNAPSHOT</version>
+        <version>0.3.1-SNAPSHOT</version>
     </parent>
 	<packaging>jar</packaging>
 
