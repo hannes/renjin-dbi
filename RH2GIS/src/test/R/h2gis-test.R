@@ -6,6 +6,6 @@ test.driver <- function() {
 	print(loadSpatialFunctions(con));
         sq <- dbSendQuery(con,"DROP TABLE IF EXISTS VANNES; CREATE TABLE VANNES (the_geom geometry, id int)")
         stopifnot(identical(dbExistsTable(con,"VANNES"),TRUE))
-        sq <- dbSendQuery(con,"INSERT INTO VANNES VALUES('POINT(0 1)'::GEOMETRY, 1)"); 
-        sq <- dbSendQuery(con,"SELECT ST_BUFFER(the_geom, 20) as the_geom FROM VANNES");
+        sq <- dbSendQuery(con,"INSERT INTO VANNES VALUES('POLYGON ((100 300, 210 300, 210 200, 100 200, 100 300))'::GEOMETRY, 1)"); 
+        stopifnot(identical(as.numeric(dbGetQuery(con,"SELECT ST_AREA(the_geom) as the_geom FROM VANNES")[[1]]),11000))
 }

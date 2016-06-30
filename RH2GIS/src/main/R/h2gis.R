@@ -6,6 +6,7 @@ RH2GIS <- H2GIS <- function() {
 .onLoad <- function(libname, pkgname) library(DBI)
 
 
+#This function load the H2GIS spatial functions
 loadSpatialFunctions <- function(con){
     if(dbIsValid(con)){
         dbSendQuery(con,"CREATE ALIAS IF NOT EXISTS H2GIS_EXTENSION FOR \"org.h2gis.ext.H2GISExtension.load\";")
