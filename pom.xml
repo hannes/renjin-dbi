@@ -57,7 +57,8 @@
         <module>RSQLite</module>
         <module>ROracle</module>
         <module>RH2</module>
-  </modules>
+        <module>RH2GIS</module>
+    </modules>
 
     <repositories>
         <repository>
