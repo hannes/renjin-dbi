@@ -44,3 +44,16 @@ library(RH2)
 con <- dbConnect(RH2(), url="jdbc:h2:file:/tmp/mydb", username="", password="")
 df  <- dbGetQuery(con, "SELECT * from sometable")
 ```
+
+## H2GIS database
+```R
+library(RH2GIS)
+con <- dbConnect(RH2GIS(), url="jdbc:h2:file:/tmp/mydb", username="sa", password="")
+loadSpatialFunctions(con)
+#Create a table with a geometry column
+dbSendQuery(con,"CREATE TABLE VANNES (the_geom geometry, id int)")
+#Insert a polygon
+dbSendQuery(con,"INSERT INTO VANNES VALUES('POLYGON ((100 300, 210 300, 210 200, 100 200, 100 300))'::geometry, 1)"); 
+#Run a spatial function
+df  <- dbGetQuery(con,"SELECT ST_AREA(the_geom) as area FROM VANNES")
+```
