@@ -2,8 +2,10 @@ library(hamcrest)
 library(RH2GIS)
 
 test.driver <- function() {
-        dbPath = paste ("jdbc:h2:file:",tempdir(), "/db", sep = "", collapse = NULL)
-        con <- dbConnect(RH2GIS(), url=dbPath, username="sa", password="")
+        dbPath = paste (tempdir(), "/h2gis", sep = "", collapse = NULL)
+        unlink(dbPath, recursive = FALSE, force = FALSE)
+        dbUrl = paste ("jdbc:h2:file:",dbPath,"/db_external", sep = "", collapse = NULL)
+        con <- dbConnect(RH2GIS(), url=dbUrl, username="sa", password="")
 	print(loadSpatialFunctions(con));
         sq <- dbSendQuery(con,"DROP TABLE IF EXISTS VANNES; CREATE TABLE VANNES (the_geom geometry, id int)")
         stopifnot(identical(dbExistsTable(con,"VANNES"),TRUE))
