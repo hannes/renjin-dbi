@@ -1,3 +1,4 @@
 import(DBI)
 importClass(org.h2.Driver)
+importClass(org.renjin.cran.DBI.JDBCUtils)
 exportPattern("^[^\\.]")

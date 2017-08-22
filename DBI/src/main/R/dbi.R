@@ -134,7 +134,7 @@ dbExistsTable.JDBCConnection <- function(con, name, ...) {
 }
 
 dbListTables.JDBCConnection <- function(con) {
-	JDBCUtils$getTables(con$conn)	
+	JDBCUtils$getTables(con$conn,c("TABLE") )
 }
 
 dbBegin.JDBCConnection <- function(con, ...) {
